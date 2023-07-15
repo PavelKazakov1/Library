@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -13,9 +16,30 @@ class Book
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $title = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $image = null;
+
+    #[ORM\Column(type: 'simple_array')]
+    private array $authors;
+
+    #[ORM\Column(type: 'date')]
+    private DateTimeInterface $publicationDate;
+
+    #[ORM\Column(type: 'boolean', options:['default' => false])]
+    private bool $meap;
+
+    /**
+     * @var Collection<BookCategory>
+     */
+    #[ORM\ManyToMany(targetEntity: BookCategory::class)]
+    private Collection $categories;
+
+    public function __construct(){
+        $this->categories = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -32,4 +56,65 @@ class Book
 
         return $this;
     }
+
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self {
+        $this->image = $image;
+        return $this;
+    }
+
+    public function getAuthors(): array
+    {
+        return $this->authors;
+    }
+
+    public function setAuthors(array $authors): self{
+        $this->authors = $authors;
+        return $this;
+    }
+
+    public function getPublicationDate(): DateTimeInterface
+    {
+        return $this->publicationDate;
+    }
+
+    public function setPublicationDate(DateTimeInterface $publicationDate): self {
+        $this->publicationDate = $publicationDate;
+        return $this;
+    }
+
+    public function isMeap(): bool
+    {
+        return $this->meap;
+    }
+
+    public function setMeap(bool $meap): self{
+        $this->meap = $meap;
+        return $this;
+    }
+
+    /**
+     * @return Collection<BookCategory>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param Collection<BookCategory> $categories
+     * @return $this
+     */
+    public function setCategories(Collection $categories): self{
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+
+
 }

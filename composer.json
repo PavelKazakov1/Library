@@ -96,12 +96,10 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "friendsofphp/php-cs-fixer": "^3.21",
-        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.6",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",
         "symfony/debug-bundle": "6.3.*",
-        "symfony/maker-bundle": "^1.49",
         "symfony/phpunit-bridge": "^6.3",
         "symfony/stopwatch": "6.3.*",
         "symfony/web-profiler-bundle": "6.3.*"
