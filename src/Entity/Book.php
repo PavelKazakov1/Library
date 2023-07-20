@@ -25,7 +25,13 @@ class Book
     #[ORM\Column(type: 'simple_array')]
     private array $authors;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'string', length:13)]
+    private string $isbn;
+
+    #[ORM\Column(type: 'text')]
+    private string $description;
+
+    #[ORM\Column(type: 'date_immutable')]
     private DateTimeInterface $publicationDate;
 
     #[ORM\Column(type: 'boolean', options:['default' => false])]
@@ -35,10 +41,18 @@ class Book
      * @var Collection<BookCategory>
      */
     #[ORM\ManyToMany(targetEntity: BookCategory::class)]
+    #[ORM\JoinTable(name:'book_to_book_category')]
     private Collection $categories;
+
+     /**
+     * @var Collection<BookToBookFormat>
+     */
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookToBookFormat::class)]
+    private Collection $formats;
 
     public function __construct(){
         $this->categories = new ArrayCollection();
+       // $this->formats = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -117,4 +131,34 @@ class Book
 
 
 
+
+	public function getIsbn(): string {
+		return $this->isbn;
+	}
+	
+	
+	public function setIsbn(string $isbn): self {
+		$this->isbn = $isbn;
+		return $this;
+	}
+	
+	public function getDescription(): string {
+		return $this->description;
+	}
+	
+	
+	public function setDescription(string $description): self {
+		$this->description = $description;
+		return $this;
+	}
+
+
+	public function getFormats(): Collection {
+		return $this->formats;
+	}
+	
+	public function setFormats(Collection $formats): self {
+		$this->formats = $formats;
+		return $this;
+	}
 }

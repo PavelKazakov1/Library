@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\BookCategory;
-use App\Model\BookCategoryListItem;
+use App\Model\BookCategory as BookCategoryModel;
 use App\Model\BookCategoryListResponse;
 use App\Repository\BookCategoryRepository;
 use App\Repository\BookRepository;
@@ -20,7 +20,7 @@ class BookCategoryService{
     {
         $categories = $this->bookCategoryRepository->findBy([],['title' => Criteria::ASC]);
         $items = array_map(
-            fn (BookCategory $bookCategory) => new BookCategoryListItem(
+            fn (BookCategory $bookCategory) => new BookCategoryModel(
                 $bookCategory->getId(), $bookCategory->getTitle()
             ),
             $categories
@@ -28,4 +28,6 @@ class BookCategoryService{
 
         return new BookCategoryListResponse($items);
     }
+
+ 
 }

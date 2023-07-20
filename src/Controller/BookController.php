@@ -9,6 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Model\BookListResponse;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations as OA;
+use App\Model\BookDetails;
+
+
 
 class BookController extends AbstractController
 {
@@ -24,13 +29,29 @@ class BookController extends AbstractController
      *      @Model(type=BookListResponse::class)
      * )
      */
-    #[Route(path: '/api/v1/category/{id}/books')]
+    #[Route(path: '/api/v1/category/{id}/books', methods: ['GET'])]
     public function booksByCategory(int $id): Response{
         try{
             return $this->json($this->bookService->getBooksByCategory($id));
         } catch (BookCategoryNotFoundException $exception){
             throw new HttpException($exception->getCode(), $exception->getMessage());
         }
+        
+    }
+
+
+
+    /**
+     * @OA\Response(
+     *      response=200,
+     *      description="Returns book information",
+     *      @Model(type=BookDetails::class)
+     * )
+     */
+    #[Route(path: '/api/v1/book/{id}', methods: ['GET'])]
+    public function booksById(int $id): Response{
+        
+        return $this->json($this->bookService->getBookById($id));
         
     }
 
